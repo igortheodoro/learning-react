@@ -14,4 +14,21 @@ const DivBox = styled.div`
   }
 `
 
-export default DivBox
+const ButtonDelete = styled.button`
+  padding: 8px;
+  border-radius: 5px;
+  border: none;
+  margin-left: 5px;
+  color: #fff;
+  background-color: #911606;
+
+  :hover{
+    background-color: #bf1600;
+    cursor: pointer;
+  }
+`
+
+export{
+  DivBox,
+  ButtonDelete
+}
