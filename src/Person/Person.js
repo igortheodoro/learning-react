@@ -1,13 +1,13 @@
 import React from 'react';
-import './Person.css'
+import DivBox from './StyledDiv'
 
 const person = (props) => {
   return(
-    <div className="div-box">
+    <DivBox>
       <p>Olá, eu sou {props.name}. Eu tenho {props.age} anos.</p>
       <input onChange={props.changed} value={props.value} type="text"/>
       <button onClick={props.delete}> Deletar</button>
-    </div>
+    </DivBox>
   ) 
 }
 

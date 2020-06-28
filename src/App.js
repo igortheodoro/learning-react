@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import Person from './Person/Person';
+import styled from 'styled-components';
 
 class App extends Component {
   state = {
@@ -15,11 +16,11 @@ class App extends Component {
 
   change = (e, index) => {
     var personInputed = e.target.value
-    var newPersons = this.state.persons
+    var newPerson = this.state.persons
 
-    newPersons[index].name = personInputed
+    newPerson[index].name = personInputed
 
-    this.setState({persons: newPersons})
+    this.setState({persons: newPerson})
   }
 
   clicked = () => {
@@ -64,7 +65,7 @@ class App extends Component {
 
   show = () => {
     const display = this.state.show
-
+    
     this.setState({
       show: !display
     })
@@ -81,11 +82,31 @@ class App extends Component {
   }
 
   render() {
+
+    const ButtonStyled = styled.button`
+      background-color: #fff;
+      color: #000;
+      padding: 8px;
+      border-radius: 5px;
+      border: 1px solid #505050;
+      margin-right: 5px;
+      transition: all .3s;
+
+      :hover{
+        color: #fff;
+        background-color: #505050;
+      }
+    `
+
     return (
       <div className="App"> 
         <h1>Pessoas</h1>
-        <button onClick={this.show}>Toggle div</button>
-        { this.state.show ? 
+        <ButtonStyled 
+         onClick={this.show}>
+          Toggle div
+        </ButtonStyled>
+
+        { this.state.show ?
           this.state.persons.map((item, index) => <Person 
             name={item.name} 
             age={item.age} 
@@ -96,7 +117,11 @@ class App extends Component {
             />
           ) : null
         }
-        <button onClick={this.clicked}>Nome completo</button>
+
+        <ButtonStyled onClick={this.clicked}>
+          Nome completo
+        </ButtonStyled>
+        
       </div>
     );
   }
