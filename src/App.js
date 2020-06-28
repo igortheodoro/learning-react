@@ -84,8 +84,8 @@ class App extends Component {
   render() {
 
     const ButtonStyled = styled.button`
-      background-color: #fff;
-      color: #000;
+      background-color: ${props => props.showAlteration ? '#505050' : '#fff'};
+      color: ${props => props.showAlteration ? '#fff' : '#000'};
       padding: 8px;
       border-radius: 5px;
       border: 1px solid #505050;
@@ -93,8 +93,8 @@ class App extends Component {
       transition: all .3s;
 
       :hover{
-        color: #fff;
-        background-color: #505050;
+        color: ${props => props.showAlteration ? '#000' : '#fff'};
+        background-color: ${props => props.showAlteration ? '#fff' : '#505050'};
       }
     `
 
@@ -102,6 +102,7 @@ class App extends Component {
       <div className="App"> 
         <h1>Pessoas</h1>
         <ButtonStyled 
+         showAlteration={this.state.show}
          onClick={this.show}>
           Toggle div
         </ButtonStyled>
@@ -118,7 +119,9 @@ class App extends Component {
           ) : null
         }
 
-        <ButtonStyled onClick={this.clicked}>
+        <ButtonStyled
+         showAlteration={this.state.show}
+         onClick={this.clicked}>
           Nome completo
         </ButtonStyled>
         
