@@ -2,18 +2,37 @@ import React, { Component } from "react";
 import "./App.css";
 import Persons from "../components/Persons/Persons";
 import Cockpit from "../components/Cockpit/Cockpit";
-import styled from "styled-components";
+import AuthContext from "../context/auth-context";
 
 class App extends Component {
-  state = {
-    persons: [
-      { name: "Igor", age: 19, id: "9*-asHASDulof" },
-      { name: "Roger", age: 27, id: "*5-652asdSDulof" },
-      { name: "Mayk", age: 65, id: "0-9asd**asd455$" },
-    ],
-    click: true,
-    show: false,
-  };
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      persons: [
+        { name: "Igor", age: 19, id: "9*-asHASDulof" },
+        { name: "Roger", age: 27, id: "*5-652asdSDulof" },
+        { name: "Mayk", age: 65, id: "0-9asd**asd455$" },
+      ],
+      click: true,
+      show: false,
+      counter: 0,
+      authenticated: false
+    };
+
+    console.log("[App.js] - Construtor");
+  }
+
+  state = {};
+
+  static getDerivedStateFromProps(props, state) {
+    console.log("[App.js] - getDerivedStateFromProps", props);
+    return state;
+  }
+
+  componentDidMount() {
+    console.log("[App.js] - componentDidMount");
+  }
 
   change = (e, index) => {
     var personInputed = e.target.value;
@@ -21,7 +40,9 @@ class App extends Component {
 
     newPerson[index].name = personInputed;
 
-    this.setState({ persons: newPerson });
+    this.setState((prevState, props) => {
+      return { persons: newPerson, counter: prevState.counter + 1 };
+    });
   };
 
   clicked = () => {
@@ -81,21 +102,39 @@ class App extends Component {
     });
   };
 
+  loginHandler = () => {
+    let authenticated = !this.state.authenticated
+
+    this.setState({
+      authenticated
+    })
+  }
+
   render() {
+    console.log("[App.js] - Render");
     return (
       <div className="App">
-        <Cockpit
-          state={this.state.show}
-          clicked={this.show}
-          showName={this.clicked}
-        />
-        {this.state.show ? (
-          <Persons
+
+        <AuthContext.Provider value={{
+          authenticated: this.state.authenticated,
+          login: this.loginHandler
+        }}>
+
+          <Cockpit
+            title={this.props.title}
+            state={this.state.show}
+            clicked={this.show}
+            showName={this.clicked}
             persons={this.state.persons}
-            changed={this.change}
-            deleted={this.delete}
           />
-        ) : null}
+          {this.state.show ? (
+            <Persons
+              persons={this.state.persons}
+              changed={this.change}
+              deleted={this.delete}
+            />
+          ) : null}
+        </AuthContext.Provider>
       </div>
     );
   }

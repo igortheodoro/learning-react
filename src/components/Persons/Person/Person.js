@@ -1,14 +1,42 @@
-import React from 'react';
-import {DivBox, ButtonDelete} from './StyledComponentsPerson'
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { DivBox, ButtonDelete } from "./StyledComponentsPerson";
+import AuthContext from "../../../context/auth-context";
 
-const person = (props) => {
-  return(
-    <DivBox>
-      <p>Olá, eu sou {props.name}. Eu tenho {props.age} anos.</p>
-      <input onChange={props.changed} value={props.value} type="text"/>
-      <ButtonDelete onClick={props.delete}> Deletar</ButtonDelete>
-    </DivBox>
-  ) 
+class Person extends Component {
+  componentDidMount() {
+    this.inputElement.focus();
+  }
+
+  render() {
+    return (
+      <DivBox>
+        <AuthContext.Consumer>
+          {context => context.authenticated ? <p> Autenticado </p> : <p>Não Autenticado</p>}
+        </AuthContext.Consumer>
+          <p>
+            Olá, eu sou {this.props.name}. Eu tenho {this.props.age} anos.
+          </p>
+          <input
+            ref={(inputElement) => {
+              this.inputElement = inputElement;
+            }}
+            onChange={this.props.changed}
+            value={this.props.value}
+            type="text"
+          />
+          <ButtonDelete onClick={this.props.delete}> Deletar</ButtonDelete>
+      </DivBox>
+    );
+  }
 }
 
-export default person;
+Person.propTypes = {
+  name: PropTypes.string,
+  age: PropTypes.any,
+  changed: PropTypes.func,
+  value: PropTypes.string,
+  delete: PropTypes.func,
+};
+
+export default Person;
